@@ -1,0 +1,2 @@
+export type CONNECT_TYPE = "OPENED" | "CLOSED";
+export type CHANNEL_STATUS = "WELL-KNOWN" | "UNKNOWN";
