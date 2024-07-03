@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SummaryInfo from "./summaryInfo";
 import Title from "./title";
 import TxTable from "./txTable";
+import Relayer from "./relayer";
 
 const Container = styled.div`
     width: 100%;
@@ -18,6 +19,7 @@ const Dashboard = () => {
         <Container>
             <Title />
             <SummaryInfo />
+            <Relayer />
             <TxTable />
         </Container>
     );
