@@ -3,6 +3,10 @@ import ChainCard from "./chainCard";
 import { CHANNEL_STATUS, CONNECT_TYPE } from "@/consts/types";
 import { IC_ACTIVE_CIRCLE } from "@/consts/images";
 import theme from "@/themes";
+import { useState } from "react";
+import TabContainer from "@/components/tab/tabContainer";
+import Tab from "@/components/tab/tab";
+import Summary from "./summary";
 import { IRelayerState } from "@/consts/interface";
 import useData from "@/hooks/useData";
 
@@ -84,7 +88,8 @@ export interface ISummaryState {
 }
 
 const ConnectionInfo = () => {
-    const { connection, channelStatus, relayer, counterParty } = useData();
+    const [tab, setTab] = useState(0);
+    const { summaryData, volumeData, operators, connection, channelStatus, relayer, counterParty } = useData();
 
     return (
         <Container>
@@ -100,6 +105,12 @@ const ConnectionInfo = () => {
                 </ConnectionSignalBox>
                 <ChainCard position={"RIGHT"} connection={connection} channelStatus={channelStatus} chain={counterParty} />
             </Box>
+            <TabContainer>
+                <Tab title={"Summary"} active={tab === 0} onClick={() => setTab(0)} />
+                <Tab title={"Volume"} active={tab === 1} onClick={() => setTab(1)} />
+                <Tab title={"Operators"} active={tab === 2} onClick={() => setTab(2)} />
+            </TabContainer>
+            {tab === 0 && <Summary data={summaryData} />}
         </Container>
     );
 };
