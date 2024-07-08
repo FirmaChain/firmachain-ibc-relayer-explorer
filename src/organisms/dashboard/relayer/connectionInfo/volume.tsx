@@ -1,10 +1,11 @@
 import { IVolumeGraph, IVolumeState } from "@/consts/interface";
 import theme from "@/themes";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import styled from "styled-components";
 import { ResponsivePie } from "@nivo/pie";
 import { convertCurrent } from "@/utils/number";
 import useData from "@/hooks/useData";
+import CircleProgress from "@/components/loading/circleProgress";
 
 const Container = styled.div`
     width: 100%;
@@ -104,6 +105,19 @@ const TooltipValueText = styled.div`
     color: ${theme.colors.valueText};
 `;
 
+const EmptyMessageText = styled.div`
+    width: 100%;
+    padding: 80px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: ${theme.colors.descText};
+    background: ${theme.colors.contentBackground};
+    border-radius: 8px;
+    gap: 5px;
+`
+
 interface IProps {
     data: IVolumeState | null;
 }
@@ -129,55 +143,61 @@ const Volume = ({ data }: IProps) => {
 
     return (
         <Container>
-            <GraphBox>
-                <ResponsivePie
-                    data={GraphData}
-                    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-                    innerRadius={0.7}
-                    padAngle={0.7}
-                    colors={{ datum: "data.color" }}
-                    borderWidth={1}
-                    borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
-                    animate={true}
-                    arcLinkLabelsSkipAngle={10}
-                    enableArcLinkLabels={false}
-                    arcLinkLabelsTextColor="#333333"
-                    enableArcLabels={false}
-                    arcLinkLabelsColor={{ from: "color" }}
-                    arcLabelsSkipAngle={10}
-                    activeOuterRadiusOffset={3}
-                    arcLabelsTextColor="#333333"
-                    tooltip={(value) => {
-                        const data = value.datum;
-                        return (
-                            <TooltipBox>
-                                <LegendWrap>
-                                    <ItemTitleDot $background={data.color} />
-                                    <LegendText>{data.label}</LegendText>
-                                    <TooltipValueText>{`$ ${convertCurrent(data.value)}`}</TooltipValueText>
-                                </LegendWrap>
-                            </TooltipBox>
-                        );
-                    }}
-                />
-            </GraphBox>
-            <ContentBox>
-                <ContentWrap>
-                    <TotalTitleText>{"TotalTransfers (Week)"}</TotalTitleText>
-                    <TotalValueText>{`$ ${convertCurrent(TotalTxAmount)}`}</TotalValueText>
-                </ContentWrap>
-                {GraphData.map((value, index) => {
-                    return (
-                        <ContentWrap key={`${value.id}-${index}`}>
-                            <ItemTitleWrap>
-                                <ItemTitleDot $background={value.color} />
-                                <ItemTitleText>{value.label}</ItemTitleText>
-                            </ItemTitleWrap>
-                            <ItemValueText>{`$ ${convertCurrent(value.value)}`}</ItemValueText>
+            {data === null ?
+                <EmptyMessageText>{"Loading"}<CircleProgress /></EmptyMessageText>
+                :
+                <Fragment>
+                    <GraphBox>
+                        <ResponsivePie
+                            data={GraphData}
+                            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                            innerRadius={0.7}
+                            padAngle={0.7}
+                            colors={{ datum: "data.color" }}
+                            borderWidth={1}
+                            borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+                            animate={true}
+                            arcLinkLabelsSkipAngle={10}
+                            enableArcLinkLabels={false}
+                            arcLinkLabelsTextColor="#333333"
+                            enableArcLabels={false}
+                            arcLinkLabelsColor={{ from: "color" }}
+                            arcLabelsSkipAngle={10}
+                            activeOuterRadiusOffset={3}
+                            arcLabelsTextColor="#333333"
+                            tooltip={(value) => {
+                                const data = value.datum;
+                                return (
+                                    <TooltipBox>
+                                        <LegendWrap>
+                                            <ItemTitleDot $background={data.color} />
+                                            <LegendText>{data.label}</LegendText>
+                                            <TooltipValueText>{`$ ${convertCurrent(data.value)}`}</TooltipValueText>
+                                        </LegendWrap>
+                                    </TooltipBox>
+                                );
+                            }}
+                        />
+                    </GraphBox>
+                    <ContentBox>
+                        <ContentWrap>
+                            <TotalTitleText>{"TotalTransfers (Week)"}</TotalTitleText>
+                            <TotalValueText>{`$ ${convertCurrent(TotalTxAmount)}`}</TotalValueText>
                         </ContentWrap>
-                    );
-                })}
-            </ContentBox>
+                        {GraphData.map((value, index) => {
+                            return (
+                                <ContentWrap key={`${value.id}-${index}`}>
+                                    <ItemTitleWrap>
+                                        <ItemTitleDot $background={value.color} />
+                                        <ItemTitleText>{value.label}</ItemTitleText>
+                                    </ItemTitleWrap>
+                                    <ItemValueText>{`$ ${convertCurrent(value.value)}`}</ItemValueText>
+                                </ContentWrap>
+                            );
+                        })}
+                    </ContentBox>
+                </Fragment>
+            }
         </Container>
     );
 };

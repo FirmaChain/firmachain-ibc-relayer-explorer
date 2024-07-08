@@ -18,9 +18,12 @@ const Container = styled.div`
 
 const EmptyBox = styled.div`
     width: 100%;
-    padding: 40px;
+    padding: 80px 20px;
     border: 1px solid ${theme.colors.cardBorder};
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const EmptyText = styled.div`
@@ -109,7 +112,7 @@ const Operators = ({ data }: IProps) => {
         <Container>
             {data === null || data.length === 0 ? (
                 <EmptyBox>
-                    <EmptyText>{"empty"}</EmptyText>
+                    <EmptyText>{"No operators data."}</EmptyText>
                 </EmptyBox>
             ) : (
                 <CustomTable
