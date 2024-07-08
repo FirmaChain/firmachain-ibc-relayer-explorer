@@ -8,6 +8,8 @@ import TabContainer from "@/components/tab/tabContainer";
 import Tab from "@/components/tab/tab";
 import Summary from "./summary";
 import { IRelayerState } from "@/consts/interface";
+import Volume from "./volume";
+import Operators from "./operators";
 import useData from "@/hooks/useData";
 
 const Container = styled.div`
@@ -111,6 +113,8 @@ const ConnectionInfo = () => {
                 <Tab title={"Operators"} active={tab === 2} onClick={() => setTab(2)} />
             </TabContainer>
             {tab === 0 && <Summary data={summaryData} />}
+            {tab === 1 && <Volume data={volumeData === null ? null : volumeData.week} />}
+            {tab === 2 && <Operators data={operators} />}
         </Container>
     );
 };
