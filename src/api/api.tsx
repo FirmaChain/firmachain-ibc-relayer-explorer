@@ -12,8 +12,25 @@ const useAPI = () => {
         }
     };
 
+    const fetchPrices = async ({ ids }: { ids: string }) => {
+        try {
+            const response = await axios.get(COINGECKO, {
+                params: {
+                    ids: ids,
+                    vs_currencies: 'usd',
+                },
+            });
+            return response.data
+        } catch (error) {
+            console.error('Error fetching prices:', error);
+            throw error;
+        }
+    };
+
+
     return {
         getRelayStatus,
+        fetchPrices
     };
 };
 

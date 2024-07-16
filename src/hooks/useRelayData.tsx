@@ -3,10 +3,11 @@ import useData from "./useData";
 import { useEffect } from "react";
 import { IC_FIRMA_LOGO_40, IC_OSMOSIS } from "@/consts/images";
 import { CHANNEL_STATUS, CONNECT_TYPE } from "@/consts/types";
+import { IPriceData } from "@/consts/interface";
 
 const useRelayData = () => {
-    const { getRelayStatus } = useAPI();
-    const { setSummaryData, setVolumeData, setOperators, setRelayer, setCounterParty, setConnection, setChannelStatus, setTransactionsData } = useData();
+    const { getRelayStatus, fetchPrices } = useAPI();
+    const { setSummaryData, setVolumeData, setOperators, setRelayer, setCounterParty, setConnection, setChannelStatus, setTransactionsData, setCurrentValue, relayer, counterParty } = useData();
 
     useEffect(() => {
         Promise.all([getRelayStatus()])
@@ -33,6 +34,31 @@ const useRelayData = () => {
             })
             .catch(() => { });
     }, []);
+
+    useEffect(() => {
+        if (relayer === null || counterParty === null) return;
+        const relayerName = relayer.name;
+        const counterPartyname = counterParty.name;
+
+        const denomMap: { [key: string]: string } = {};
+        [relayer, counterParty].forEach(relayer => {
+            denomMap[relayer.name.toLowerCase()] = relayer.denom;
+        });
+
+        Promise.all([fetchPrices({ ids: `${relayerName},${counterPartyname}` })])
+            .then(([prices]) => {
+                const transformedPrices: IPriceData = Object.entries(prices).reduce((acc, [key, value]) => {
+                    const denom = denomMap[key];
+                    if (denom) {
+                        acc[denom] = value as any;
+                    }
+                    return acc;
+                }, {} as IPriceData);
+
+                setCurrentValue(transformedPrices);
+            })
+            .catch(() => { });
+    }, [relayer, counterParty])
 
     return {
         getRelayStatus,

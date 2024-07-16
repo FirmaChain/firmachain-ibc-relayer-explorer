@@ -128,6 +128,8 @@ const Volume = ({ data }: IProps) => {
     const totalReceivedSum = calculateTotalVolumeAmount(data?.totalReceived);
     const totalSendSum = calculateTotalVolumeAmount(data?.totalSend);
 
+    const existCurrentData = !Boolean(totalReceivedSum === "-" || totalSendSum === "-");
+
     const GraphData: IVolumeGraph[] = useMemo(() => {
         if (data === null) return [];
         return [
@@ -143,7 +145,7 @@ const Volume = ({ data }: IProps) => {
 
     return (
         <Container>
-            {data === null ?
+            {data === null || existCurrentData === false ?
                 <EmptyMessageText>{"Loading"}<CircleProgress /></EmptyMessageText>
                 :
                 <Fragment>
