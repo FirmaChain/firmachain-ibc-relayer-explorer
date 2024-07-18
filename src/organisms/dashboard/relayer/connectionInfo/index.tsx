@@ -7,7 +7,6 @@ import { useState } from "react";
 import TabContainer from "@/components/tab/tabContainer";
 import Tab from "@/components/tab/tab";
 import Summary from "./summary";
-import { IRelayerState } from "@/consts/interface";
 import Volume from "./volume";
 import Operators from "./operators";
 import useData from "@/hooks/useData";
@@ -80,14 +79,6 @@ const ConnectionText = styled.div<{ $connect: CONNECT_TYPE; $status: CHANNEL_STA
         font-size: 10px;
     }
 `;
-
-export interface ISummaryState {
-    relayer: IRelayerState;
-    counterParty: IRelayerState;
-    createdAt: string;
-    state: string;
-    clientID: string;
-}
 
 const ConnectionInfo = () => {
     const [tab, setTab] = useState(0);

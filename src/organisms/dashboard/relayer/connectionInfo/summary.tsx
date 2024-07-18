@@ -1,9 +1,9 @@
 import DefaultCard from "@/components/card/defaultCard";
 import theme from "@/themes";
 import styled from "styled-components";
-import { ISummaryState } from ".";
 import { useMemo } from "react";
 import { formatDateOrShowDistance, getUTCOffset, toUTCFormattedDate } from "@/utils/date";
+import { ISummaryState } from "@/consts/interface";
 
 const Container = styled.div`
     width: 100%;

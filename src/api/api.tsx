@@ -27,10 +27,20 @@ const useAPI = () => {
         }
     };
 
+    const getRelayTxHistory = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/transactions`);
+            return res.data.result;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    };
 
     return {
         getRelayStatus,
-        fetchPrices
+        fetchPrices,
+        getRelayTxHistory
     };
 };
 
