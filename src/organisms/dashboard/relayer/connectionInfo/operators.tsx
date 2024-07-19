@@ -1,3 +1,4 @@
+import ClipBoard from "@/components/clipboard/clipboard";
 import CustomTable, { IHeader, TableCell, TableRow } from "@/components/table/customTable";
 import { IOperatorState } from "@/consts/interface";
 import { EXPLORER_URL } from "@/consts/urls";
@@ -31,6 +32,13 @@ const EmptyText = styled.div`
     color: ${theme.colors.descText};
 `;
 
+const AddressWrap = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+`
+
 const AddressText = styled.div`
     font-size: 14px;
     color: ${theme.colors.linkText};
@@ -59,17 +67,9 @@ const TimeDescText = styled.div`
     color: ${theme.colors.descText};
 `;
 
-const TxsText = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 14px;
-    color: ${theme.colors.valueText};
-`;
-
 const HEADER: IHeader[] = [
     { id: "address", title: "Operator Address" },
-    { id: "updatedAt", title: `Time (${getUTCOffset(new Date())})`, align: "right" },
+    { id: "updatedAt", title: `Last Updated (${getUTCOffset(new Date())})`, align: "right" },
 ];
 
 interface IProps {
@@ -96,7 +96,10 @@ const Operators = ({ data }: IProps) => {
         return (
             <TableRow>
                 <TableCell>
-                    <AddressText onClick={onClickAddress}>{item.address}</AddressText>
+                    <AddressWrap>
+                        <AddressText onClick={onClickAddress}>{item.address}</AddressText>
+                        <ClipBoard value={item.address} />
+                    </AddressWrap>
                 </TableCell>
                 <TableCell>
                     <TimeBox>

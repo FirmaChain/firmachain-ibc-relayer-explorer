@@ -3,6 +3,8 @@ import SummaryInfo from "./summaryInfo";
 import Title from "./title";
 import TxTable from "./txTable";
 import Relayer from "./relayer";
+import useRelayData from "@/hooks/useRelayData";
+import useRelayTxData from "@/hooks/useRelayTxData";
 
 const Container = styled.div`
     width: 100%;
@@ -15,6 +17,9 @@ const Container = styled.div`
 `;
 
 const Dashboard = () => {
+    useRelayData();
+    useRelayTxData();
+
     return (
         <Container>
             <Title />

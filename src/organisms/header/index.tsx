@@ -1,6 +1,6 @@
 import { IMG_FIRMA_LOGO } from "@/consts/images";
-import theme from "@/themes";
 import { ConnectKeplr } from "@/utils/common";
+import theme from "@/themes";
 import styled from "styled-components";
 
 const Container = styled.div`

@@ -11,6 +11,7 @@ export const IC_LINK_EXTERNAL = PUBLIC_URL + "/ic_external.svg";
 export const IC_MEDIUM = PUBLIC_URL + "/ic_medium.svg";
 export const IC_TELEGRAM = PUBLIC_URL + "/ic_telegram.svg";
 export const IC_TWITTER = PUBLIC_URL + "/ic_twitter.svg";
+export const IC_COPY = PUBLIC_URL + "/ic_copy.png";
 
 export const IC_BACK_DOUBLE_ACTIVE = PUBLIC_URL + "/ic_back_double_active.png";
 export const IC_BACK_ACTIVE = PUBLIC_URL + "/ic_back_active.png";
