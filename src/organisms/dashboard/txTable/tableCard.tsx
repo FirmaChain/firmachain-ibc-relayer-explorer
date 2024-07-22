@@ -13,6 +13,7 @@ import styled from "styled-components";
 import useData from "@/hooks/useData";
 import CircleProgress from "@/components/loading/circleProgress";
 import CustomTooltip from "@/components/tooltip/customTooltip";
+import { IC_TX_FAILED, IC_TX_SUCCESS } from "@/consts/images";
 
 const Container = styled.div`
     width: 100%;
@@ -67,11 +68,23 @@ const SymbolText = styled.div`
     color: ${theme.colors.descText};
 `;
 
+const ResultWrap = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+`
+
 const ResultText = styled.div<{ $success: boolean }>`
     font-size: 14px;
-    ${({ $success }) => $success === true && `color: ${theme.colors.connectionActive}`};
-    ${({ $success }) => $success === false && `color: ${theme.colors.connectionInactive}`};
+    color: ${theme.colors.descText};
 `;
+
+const ResultIcon = styled.img`
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+`
 
 const TimeBox = styled.div`
     display: flex;
@@ -189,16 +202,19 @@ const TableCard = ({ title, data }: IProps) => {
                 <TableCell style={{ width: '250px' }}>
                     <HashText onClick={onClickHash}>{createTextEllipsis(item.transactionHash, 10, 10)}</HashText>
                 </TableCell>
-                <TableCell style={{ width: '100px' }}>
-                    <ResultText $success={item.success}>{item.success ? "Success" : "Failed"}</ResultText>
+                <TableCell style={{ width: '130px' }}>
+                    <ResultWrap>
+                        <ResultIcon src={Boolean(item.success) ? IC_TX_SUCCESS : IC_TX_FAILED} alt={'transaction result'} />
+                        <ResultText $success={item.success}>{item.success ? "Success" : "Failed"}</ResultText>
+                    </ResultWrap>
                 </TableCell>
-                <TableCell style={{ width: '200px' }}>
+                <TableCell style={{ width: '180px' }}>
                     <MessageText $color={convertMsg.tagTheme}>{convertMsg.tagDisplay}</MessageText>
                 </TableCell>
-                <TableCell style={{ width: '200px' }}>
+                <TableCell style={{ width: '150px' }}>
                     <HeightText onClick={onClickBlock}>{convertCurrent(item.height)}</HeightText>
                 </TableCell>
-                <TableCell style={{ width: '200px' }}>
+                <TableCell style={{ width: '150px' }}>
                     <CustomTooltip title={`${amount.origin} ${getSymbol({ denom: item.value.amount[0].denom })}`} >
                         <AmountWrap>
                             <AmountText>{amount.value}</AmountText>
@@ -206,7 +222,7 @@ const TableCard = ({ title, data }: IProps) => {
                         </AmountWrap>
                     </CustomTooltip>
                 </TableCell>
-                <TableCell style={{ width: '200px' }}>
+                <TableCell style={{ width: '150px' }}>
                     <CustomTooltip title={`${fee.origin} ${getSymbol({ denom: item.fee.amount[0].denom })}`}>
                         <AmountWrap>
                             <AmountText>{fee.value}</AmountText>
@@ -214,7 +230,7 @@ const TableCard = ({ title, data }: IProps) => {
                         </AmountWrap>
                     </CustomTooltip>
                 </TableCell>
-                <TableCell style={{ width: '200px' }}>
+                <TableCell style={{ width: '180px' }}>
                     <TimeBox>
                         <TimeTitleText>{date}</TimeTitleText>
                         <TimeDescText>{`${time} (${distance})`}</TimeDescText>
